@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/Yash28102/Caps_Project.git'
+                url: 'https://github.com/Yash28102/Final_Assessment.git'
             }
         }
 
@@ -23,14 +23,14 @@ pipeline {
         }
 	stage('Compile') {
             steps {
-				dir('Guru99BankFramework'){
+				dir('Final Assessment'){
                 bat 'mvn compile'
             }
         }
         }
         stage('Build and Test') {
             steps {
-                dir('Guru99BankFramework') {
+                dir('Final Assessment') {
                     bat 'mvn clean'
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
  
         stage('Test') {
             steps {
-				dir('Guru99BankFramework'){
+				dir('Final Assessment'){
                 bat 'mvn test'
             }
         }
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Package') {
             steps {
-                dir('Guru99BankFramework') {
+                dir('Final Assessment') {
                     bat 'mvn package -DskipTests'
                 }
             }
@@ -56,14 +56,14 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                dir('Guru99BankFramework') {
+                dir('Final Assessment') {
                     bat 'docker build -t testng-framework .'
                 }
             }
         }
         stage('Docker Run') {
             steps {
-                dir('Guru99BankFramework') {
+                dir('Final Assessment') {
                     bat 'docker run -rm testng-framework'
                 }
             }
