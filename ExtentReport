@@ -1,0 +1,43 @@
+package utilities;
+
+import com.aventstack.extentreports.*;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+public class ExtentReportListener implements ITestListener {
+    private static ExtentReports extent;
+    private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
+
+    public void onStart(ITestContext context) {
+        String reportPath = System.getProperty("user.dir") + "/reports/OpenCartExtentReport.html";
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter(reportPath);
+
+        extent = new ExtentReports();
+        extent.attachReporter(sparkReporter);
+        extent.setSystemInfo("Project", "OpenCart Automation");
+        extent.setSystemInfo("Framework", "Hardcoded Framework Layout");
+    }
+
+    public void onTestStart(ITestResult result) {
+        ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName());
+        test.set(extentTest);
+    }
+
+    public void onTestSuccess(ITestResult result) {
+        test.get().pass("Test Passed");
+    }
+
+    public void onTestFailure(ITestResult result) {
+        test.get().fail(result.getThrowable());
+    }
+
+    public void onTestSkipped(ITestResult result) {
+        test.get().skip("Test Skipped");
+    }
+
+    public void onFinish(ITestContext context) {
+        extent.flush();
+    }
+}
